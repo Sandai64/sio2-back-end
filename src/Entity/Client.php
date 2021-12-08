@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Client
  *
- * @ORM\Table(name="client")
- * @ORM\Entity(repositoryClass="App\Repository\ClientRepository");
+ * @ORM\Table(name="CLIENT")
+ * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
  */
 class Client
 {
@@ -24,175 +24,175 @@ class Client
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="nom_client", type="string", length=45, nullable=false)
      */
-    private $nom;
+    private $nomClient;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="prenom", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="prenom_client", type="string", length=45, nullable=false)
      */
-    private $prenom;
+    private $prenomClient;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="mot_de_passe", type="text", length=65535, nullable=false)
      */
-    private $email;
+    private $motDePasse;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="adresse", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="mail_client", type="text", length=65535, nullable=false)
      */
-    private $adresse;
+    private $mailClient;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="code_postal", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="lib_rue_client", type="string", length=45, nullable=false)
      */
-    private $codePostal;
+    private $libRueClient;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ville", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="CP_client", type="string", length=45, nullable=false)
      */
-    private $ville;
+    private $cpClient;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tel", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="ville_client", type="string", length=45, nullable=false)
      */
-    private $tel;
+    private $villeClient;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="tel_client", type="string", length=45, nullable=false)
      */
-    private $password;
+    private $telClient;
 
     /**
-     * @var bool
+     * @var binary
      *
-     * @ORM\Column(name="inscritNewsletter", type="boolean", nullable=false)
+     * @ORM\Column(name="abonnement_newsletter", type="binary", nullable=false)
      */
-    private $inscritnewsletter;
+    private $abonnementNewsletter;
 
     public function getIdClient(): ?int
     {
         return $this->idClient;
     }
 
-    public function getNom(): ?string
+    public function getNomClient(): ?string
     {
-        return $this->nom;
+        return $this->nomClient;
     }
 
-    public function setNom(string $nom): self
+    public function setNomClient(string $nomClient): self
     {
-        $this->nom = $nom;
+        $this->nomClient = $nomClient;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
+    public function getPrenomClient(): ?string
     {
-        return $this->prenom;
+        return $this->prenomClient;
     }
 
-    public function setPrenom(string $prenom): self
+    public function setPrenomClient(string $prenomClient): self
     {
-        $this->prenom = $prenom;
+        $this->prenomClient = $prenomClient;
 
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getMotDePasse(): ?string
     {
-        return $this->email;
+        return $this->motDePasse;
     }
 
-    public function setEmail(string $email): self
+    public function setMotDePasse(string $motDePasse): self
     {
-        $this->email = $email;
+        $this->motDePasse = $motDePasse;
 
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getMailClient(): ?string
     {
-        return $this->adresse;
+        return $this->mailClient;
     }
 
-    public function setAdresse(string $adresse): self
+    public function setMailClient(string $mailClient): self
     {
-        $this->adresse = $adresse;
+        $this->mailClient = $mailClient;
 
         return $this;
     }
 
-    public function getCodePostal(): ?string
+    public function getLibRueClient(): ?string
     {
-        return $this->codePostal;
+        return $this->libRueClient;
     }
 
-    public function setCodePostal(string $codePostal): self
+    public function setLibRueClient(string $libRueClient): self
     {
-        $this->codePostal = $codePostal;
+        $this->libRueClient = $libRueClient;
 
         return $this;
     }
 
-    public function getVille(): ?string
+    public function getCpClient(): ?string
     {
-        return $this->ville;
+        return $this->cpClient;
     }
 
-    public function setVille(string $ville): self
+    public function setCpClient(string $cpClient): self
     {
-        $this->ville = $ville;
+        $this->cpClient = $cpClient;
 
         return $this;
     }
 
-    public function getTel(): ?string
+    public function getVilleClient(): ?string
     {
-        return $this->tel;
+        return $this->villeClient;
     }
 
-    public function setTel(string $tel): self
+    public function setVilleClient(string $villeClient): self
     {
-        $this->tel = $tel;
+        $this->villeClient = $villeClient;
 
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getTelClient(): ?string
     {
-        return $this->password;
+        return $this->telClient;
     }
 
-    public function setPassword(string $password): self
+    public function setTelClient(string $telClient): self
     {
-        $this->password = $password;
+        $this->telClient = $telClient;
 
         return $this;
     }
 
-    public function getInscritnewsletter(): ?bool
+    public function getAbonnementNewsletter()
     {
-        return $this->inscritnewsletter;
+        return $this->abonnementNewsletter;
     }
 
-    public function setInscritnewsletter(bool $inscritnewsletter): self
+    public function setAbonnementNewsletter($abonnementNewsletter): self
     {
-        $this->inscritnewsletter = $inscritnewsletter;
+        $this->abonnementNewsletter = $abonnementNewsletter;
 
         return $this;
     }

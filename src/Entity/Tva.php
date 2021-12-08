@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Tva
  *
- * @ORM\Table(name="tva")
- * @ORM\Entity(repositoryClass="App\Repository\TvaRepository");
+ * @ORM\Table(name="TVA")
+ * @ORM\Entity(repositoryClass="App\Repository\TvaRepository")
  */
 class Tva
 {
@@ -22,25 +22,25 @@ class Tva
     private $idTva;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(name="taux_tva", type="float", precision=10, scale=0, nullable=false)
+     * @ORM\Column(name="pourcentageTVA", type="decimal", precision=10, scale=1, nullable=false)
      */
-    private $tauxTva;
+    private $pourcentagetva;
 
     public function getIdTva(): ?int
     {
         return $this->idTva;
     }
 
-    public function getTauxTva(): ?float
+    public function getPourcentagetva(): ?string
     {
-        return $this->tauxTva;
+        return $this->pourcentagetva;
     }
 
-    public function setTauxTva(float $tauxTva): self
+    public function setPourcentagetva(string $pourcentagetva): self
     {
-        $this->tauxTva = $tauxTva;
+        $this->pourcentagetva = $pourcentagetva;
 
         return $this;
     }

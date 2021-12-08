@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Categorie
  *
- * @ORM\Table(name="categorie")
- * @ORM\Entity(repositoryClass="App\Repository\CategorieRepository");
+ * @ORM\Table(name="CATEGORIE")
+ * @ORM\Entity(repositoryClass="App\Repository\CategorieRepository")
  */
 class Categorie
 {
@@ -24,42 +26,120 @@ class Categorie
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="libelle_categorie", type="string", length=45, nullable=false)
      */
-    private $nom;
+    private $libelleCategorie;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description_categorie", type="text", length=65535, nullable=true, options={"default"="NULL"})
      */
-    private $description;
+    private $descriptionCategorie = 'NULL';
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(name="activation", type="boolean", nullable=true, options={"default"="1"})
+     */
+    private $activation = true;
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(name="import", type="boolean", nullable=true)
+     */
+    private $import = '0';
+
+    /**
+     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="categorie", orphanRemoval=true)
+     */
+    private $produit;
+
+    public function __construct()
+    {
+        $this->produit = new ArrayCollection();
+    }
 
     public function getIdCategorie(): ?int
     {
         return $this->idCategorie;
     }
 
-    public function getNom(): ?string
+    public function getLibelleCategorie(): ?string
     {
-        return $this->nom;
+        return $this->libelleCategorie;
     }
 
-    public function setNom(string $nom): self
+    public function setLibelleCategorie(string $libelleCategorie): self
     {
-        $this->nom = $nom;
+        $this->libelleCategorie = $libelleCategorie;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescriptionCategorie(): ?string
     {
-        return $this->description;
+        return $this->descriptionCategorie;
     }
 
-    public function setDescription(string $description): self
+    public function setDescriptionCategorie(?string $descriptionCategorie): self
     {
-        $this->description = $description;
+        $this->descriptionCategorie = $descriptionCategorie;
+
+        return $this;
+    }
+
+    public function getActivation(): ?bool
+    {
+        return $this->activation;
+    }
+
+    public function setActivation(?bool $activation): self
+    {
+        $this->activation = $activation;
+
+        return $this;
+    }
+
+    public function getImport(): ?bool
+    {
+        return $this->import;
+    }
+
+    public function setImport(?bool $import): self
+    {
+        $this->import = $import;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Produit[]
+     */
+    public function getProduit(): Collection
+    {
+        return $this->produit;
+    }
+
+    public function addProduit(Produit $produit): self
+    {
+        if (!$this->produit->contains($produit)) {
+            $this->produit[] = $produit;
+            $produit->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): self
+    {
+        if ($this->produit->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
+            if ($produit->getCategorie() === $this) {
+                $produit->setCategorie(null);
+            }
+        }
 
         return $this;
     }

@@ -5,12 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * RoleEmploye
+ * Role
  *
- * @ORM\Table(name="role_employe")
- * @ORM\Entity(repositoryClass="App\Repository\RoleEmployeRepository");
+ * @ORM\Table(name="ROLE")
+ * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
  */
-class RoleEmploye
+class Role
 {
     /**
      * @var int
@@ -24,23 +24,23 @@ class RoleEmploye
     /**
      * @var string
      *
-     * @ORM\Column(name="nom_role", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="libelle_role", type="string", length=45, nullable=false)
      */
-    private $nomRole;
+    private $libelleRole;
 
     public function getIdRole(): ?int
     {
         return $this->idRole;
     }
 
-    public function getNomRole(): ?string
+    public function getLibelleRole(): ?string
     {
-        return $this->nomRole;
+        return $this->libelleRole;
     }
 
-    public function setNomRole(string $nomRole): self
+    public function setLibelleRole(string $libelleRole): self
     {
-        $this->nomRole = $nomRole;
+        $this->libelleRole = $libelleRole;
 
         return $this;
     }

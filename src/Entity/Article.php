@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -6,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Article
  *
- * @ORM\Table(name="article", indexes={@ORM\Index(name="fk_article_id_rubrique", columns={"id_rubrique"}), @ORM\Index(name="fk_article_id_employe", columns={"id_employe"})})
- * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository");
+ * @ORM\Table(name="ARTICLE", indexes={@ORM\Index(name="FK_134", columns={"id_employe"}), @ORM\Index(name="FK_137", columns={"id_rubrique"})})
+ * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */
 class Article
 {
@@ -23,9 +24,9 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="titre", type="text", length=65535, nullable=false)
      */
-    private $nom;
+    private $titre;
 
     /**
      * @var string
@@ -37,26 +38,9 @@ class Article
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(name="date_création_article", type="date", nullable=false)
      */
-    private $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
-     */
-    private $updatedAt;
-
-    /**
-     * @var \Employe
-     *
-     * @ORM\ManyToOne(targetEntity="Employe")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_employe", referencedColumnName="id_employe")
-     * })
-     */
-    private $idEmploye;
+    private $dateCréationArticle;
 
     /**
      * @var \Rubrique
@@ -68,19 +52,29 @@ class Article
      */
     private $idRubrique;
 
+    /**
+     * @var \Employe
+     *
+     * @ORM\ManyToOne(targetEntity="Employe")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_employe", referencedColumnName="id_employe")
+     * })
+     */
+    private $idEmploye;
+
     public function getIdArticle(): ?int
     {
         return $this->idArticle;
     }
 
-    public function getNom(): ?string
+    public function getTitre(): ?string
     {
-        return $this->nom;
+        return $this->titre;
     }
 
-    public function setNom(string $nom): self
+    public function setTitre(string $titre): self
     {
-        $this->nom = $nom;
+        $this->titre = $titre;
 
         return $this;
     }
@@ -97,38 +91,14 @@ class Article
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getDateCréationArticle(): ?\DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->dateCréationArticle;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setDateCréationArticle(\DateTimeInterface $dateCréationArticle): self
     {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getIdEmploye(): ?Employe
-    {
-        return $this->idEmploye;
-    }
-
-    public function setIdEmploye(?Employe $idEmploye): self
-    {
-        $this->idEmploye = $idEmploye;
+        $this->dateCréationArticle = $dateCréationArticle;
 
         return $this;
     }
@@ -141,6 +111,18 @@ class Article
     public function setIdRubrique(?Rubrique $idRubrique): self
     {
         $this->idRubrique = $idRubrique;
+
+        return $this;
+    }
+
+    public function getIdEmploye(): ?Employe
+    {
+        return $this->idEmploye;
+    }
+
+    public function setIdEmploye(?Employe $idEmploye): self
+    {
+        $this->idEmploye = $idEmploye;
 
         return $this;
     }

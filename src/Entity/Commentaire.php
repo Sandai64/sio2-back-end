@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Commentaire
  *
- * @ORM\Table(name="commentaire", indexes={@ORM\Index(name="fk_commentaire_id_produit", columns={"id_produit"}), @ORM\Index(name="fk_stock_id_client", columns={"id_client"}), @ORM\Index(name="fk_commentaire_id_declinaison", columns={"id_declinaison"})})
- * @ORM\Entity(repositoryClass="App\Repository\CommentaireRepository");
+ * @ORM\Table(name="COMMENTAIRE", indexes={@ORM\Index(name="fkIdx_22", columns={"id_client"}), @ORM\Index(name="fkIdx_25", columns={"id_produit"})})
+ * @ORM\Entity(repositoryClass="App\Repository\CommentaireRepository")
  */
 class Commentaire
 {
@@ -31,36 +31,16 @@ class Commentaire
     /**
      * @var string
      *
-     * @ORM\Column(name="contenu", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
-    private $contenu;
+    private $description;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(name="date", type="datetime", nullable=false)
      */
-    private $createdAt;
-
-    /**
-     * @var \Declinaison
-     *
-     * @ORM\ManyToOne(targetEntity="Declinaison")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_declinaison", referencedColumnName="id_declinaison")
-     * })
-     */
-    private $idDeclinaison;
-
-    /**
-     * @var \Client
-     *
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client")
-     * })
-     */
-    private $idClient;
+    private $date;
 
     /**
      * @var \Produit
@@ -71,6 +51,16 @@ class Commentaire
      * })
      */
     private $idProduit;
+
+    /**
+     * @var \Client
+     *
+     * @ORM\ManyToOne(targetEntity="Client")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client")
+     * })
+     */
+    private $idClient;
 
     public function getIdCommentaire(): ?int
     {
@@ -89,50 +79,26 @@ class Commentaire
         return $this;
     }
 
-    public function getContenu(): ?string
+    public function getDescription(): ?string
     {
-        return $this->contenu;
+        return $this->description;
     }
 
-    public function setContenu(string $contenu): self
+    public function setDescription(string $description): self
     {
-        $this->contenu = $contenu;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->date;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getIdDeclinaison(): ?Declinaison
-    {
-        return $this->idDeclinaison;
-    }
-
-    public function setIdDeclinaison(?Declinaison $idDeclinaison): self
-    {
-        $this->idDeclinaison = $idDeclinaison;
-
-        return $this;
-    }
-
-    public function getIdClient(): ?Client
-    {
-        return $this->idClient;
-    }
-
-    public function setIdClient(?Client $idClient): self
-    {
-        $this->idClient = $idClient;
+        $this->date = $date;
 
         return $this;
     }
@@ -145,6 +111,18 @@ class Commentaire
     public function setIdProduit(?Produit $idProduit): self
     {
         $this->idProduit = $idProduit;
+
+        return $this;
+    }
+
+    public function getIdClient(): ?Client
+    {
+        return $this->idClient;
+    }
+
+    public function setIdClient(?Client $idClient): self
+    {
+        $this->idClient = $idClient;
 
         return $this;
     }
