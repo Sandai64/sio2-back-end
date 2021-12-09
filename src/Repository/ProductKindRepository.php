@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\ProduitCommande;
+use App\Entity\ProductKind;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ProduitCommande|null find($id, $lockMode = null, $lockVersion = null)
- * @method ProduitCommande|null findOneBy(array $criteria, array $orderBy = null)
- * @method ProduitCommande[]    findAll()
- * @method ProduitCommande[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ProductKind|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ProductKind|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ProductKind[]    findAll()
+ * @method ProductKind[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProduitCommandeRepository extends ServiceEntityRepository
+class ProductKindRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ProduitCommande::class);
+        parent::__construct($registry, ProductKind::class);
     }
 
     // /**
-    //  * @return ProduitCommande[] Returns an array of ProduitCommande objects
+    //  * @return ProductKind[] Returns an array of ProductKind objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ProduitCommandeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ProduitCommande
+    public function findOneBySomeField($value): ?ProductKind
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')
