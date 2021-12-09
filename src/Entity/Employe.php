@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Employe
  *
- * @ORM\Table(name="employe")
- * @ORM\Entity(repositoryClass="App\Repository\EmployeRepository");
+ * @ORM\Table(name="EMPLOYE", indexes={@ORM\Index(name="fkIdx_45", columns={"id_role"})})
+ * @ORM\Entity(repositoryClass="App\Repository\EmployeRepository")
  */
 class Employe
 {
@@ -22,107 +22,81 @@ class Employe
     private $idEmploye;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id_role", type="integer", nullable=false)
-     */
-    private $idRole;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="email", type="text", length=65535, nullable=false)
-     */
-    private $email;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="text", length=65535, nullable=false)
-     */
-    private $password;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="nom", type="string", length=45, nullable=false)
      */
     private $nom;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="prenom", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="prenom", type="string", length=45, nullable=false)
      */
     private $prenom;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="code_postal", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="mot_de_passe", type="text", length=65535, nullable=false)
      */
-    private $codePostal;
+    private $motDePasse;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="ville", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="mail", type="text", length=65535, nullable=false)
+     */
+    private $mail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lib_rue", type="text", length=65535, nullable=false)
+     */
+    private $libRue;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="CP_ville", type="string", length=45, nullable=false)
+     */
+    private $cpVille;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville", type="string", length=45, nullable=false)
      */
     private $ville;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="adresse", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="tel", type="string", length=45, nullable=false)
      */
-    private $adresse;
+    private $tel;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_embauche", type="date", nullable=false)
+     * @ORM\Column(name="date_embauche", type="datetime", nullable=false)
      */
     private $dateEmbauche;
+
+    /**
+     * @var \Role
+     *
+     * @ORM\ManyToOne(targetEntity="Role")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_role", referencedColumnName="id_role")
+     * })
+     */
+    private $idRole;
 
     public function getIdEmploye(): ?int
     {
         return $this->idEmploye;
-    }
-
-    public function getIdRole(): ?int
-    {
-        return $this->idRole;
-    }
-
-    public function setIdRole(int $idRole): self
-    {
-        $this->idRole = $idRole;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
     }
 
     public function getNom(): ?string
@@ -149,14 +123,50 @@ class Employe
         return $this;
     }
 
-    public function getCodePostal(): ?string
+    public function getMotDePasse(): ?string
     {
-        return $this->codePostal;
+        return $this->motDePasse;
     }
 
-    public function setCodePostal(string $codePostal): self
+    public function setMotDePasse(string $motDePasse): self
     {
-        $this->codePostal = $codePostal;
+        $this->motDePasse = $motDePasse;
+
+        return $this;
+    }
+
+    public function getMail(): ?string
+    {
+        return $this->mail;
+    }
+
+    public function setMail(string $mail): self
+    {
+        $this->mail = $mail;
+
+        return $this;
+    }
+
+    public function getLibRue(): ?string
+    {
+        return $this->libRue;
+    }
+
+    public function setLibRue(string $libRue): self
+    {
+        $this->libRue = $libRue;
+
+        return $this;
+    }
+
+    public function getCpVille(): ?string
+    {
+        return $this->cpVille;
+    }
+
+    public function setCpVille(string $cpVille): self
+    {
+        $this->cpVille = $cpVille;
 
         return $this;
     }
@@ -173,14 +183,14 @@ class Employe
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getTel(): ?string
     {
-        return $this->adresse;
+        return $this->tel;
     }
 
-    public function setAdresse(string $adresse): self
+    public function setTel(string $tel): self
     {
-        $this->adresse = $adresse;
+        $this->tel = $tel;
 
         return $this;
     }
@@ -193,6 +203,18 @@ class Employe
     public function setDateEmbauche(\DateTimeInterface $dateEmbauche): self
     {
         $this->dateEmbauche = $dateEmbauche;
+
+        return $this;
+    }
+
+    public function getIdRole(): ?Role
+    {
+        return $this->idRole;
+    }
+
+    public function setIdRole(?Role $idRole): self
+    {
+        $this->idRole = $idRole;
 
         return $this;
     }

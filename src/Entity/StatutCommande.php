@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * StatutCommande
  *
- * @ORM\Table(name="statut_commande")
- * @ORM\Entity(repositoryClass="App\Repository\StatutCommandeRepository");
+ * @ORM\Table(name="STATUT_COMMANDE")
+ * @ORM\Entity(repositoryClass="App\Repository\StatutCommandeRepository")
  */
 class StatutCommande
 {
@@ -24,42 +24,42 @@ class StatutCommande
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="libelle_statut", type="string", length=45, nullable=false)
      */
-    private $nom;
+    private $libelleStatut;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="description_statut", type="text", length=65535, nullable=false)
      */
-    private $description = 'NULL';
+    private $descriptionStatut;
 
     public function getIdStatut(): ?int
     {
         return $this->idStatut;
     }
 
-    public function getNom(): ?string
+    public function getLibelleStatut(): ?string
     {
-        return $this->nom;
+        return $this->libelleStatut;
     }
 
-    public function setNom(string $nom): self
+    public function setLibelleStatut(string $libelleStatut): self
     {
-        $this->nom = $nom;
+        $this->libelleStatut = $libelleStatut;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescriptionStatut(): ?string
     {
-        return $this->description;
+        return $this->descriptionStatut;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescriptionStatut(string $descriptionStatut): self
     {
-        $this->description = $description;
+        $this->descriptionStatut = $descriptionStatut;
 
         return $this;
     }

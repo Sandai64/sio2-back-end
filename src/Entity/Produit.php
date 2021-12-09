@@ -2,15 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Produit
  *
- * @ORM\Table(name="produit", indexes={@ORM\Index(name="fk_produit_id_tva", columns={"id_tva"}), @ORM\Index(name="fk_produit_id_categorie", columns={"id_categorie"})})
- * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository");
+ * @ORM\Table(name="PRODUIT", indexes={@ORM\Index(name="fkIdx_13", columns={"id_categorie"}), @ORM\Index(name="fkIdx_95", columns={"id_tva"})})
+ * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository")
  */
 class Produit
 {
@@ -26,40 +24,44 @@ class Produit
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="libelle_produit", type="string", length=45, nullable=false)
      */
-    private $nom;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
-     */
-    private $description;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="pu_ht", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $puHt;
+    private $libelleProduit;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="images", type="text", length=0, nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="description_produit", type="text", length=65535, nullable=true, options={"default"="NULL"})
      */
-    private $images = 'NULL';
+    private $descriptionProduit = 'NULL';
 
     /**
-     * @var \Categorie
+     * @var float
      *
-     * @ORM\ManyToOne(targetEntity="Categorie")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_categorie", referencedColumnName="id_categorie")
-     * })
+     * @ORM\Column(name="prix_unitaire_HT", type="float", precision=10, scale=0, nullable=false)
      */
-    private $idCategorie;
+    private $prixUnitaireHt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="image", type="text", length=65535, nullable=true, options={"default"="NULL"})
+     */
+    private $image = 'NULL';
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(name="activation", type="boolean", nullable=true, options={"default"="1"})
+     */
+    private $activation = true;
+
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(name="import", type="boolean", nullable=true)
+     */
+    private $import = '0';
 
     /**
      * @var \Tva
@@ -72,97 +74,84 @@ class Produit
     private $idTva;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Declinaison", inversedBy="produit")
-     * @ORM\JoinTable(name="produit_declinaison",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="produit_id", referencedColumnName="id_produit")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="declinaison_id", referencedColumnName="id_declinaison")
-     *   }
-     * )
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="produit")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $declinaison;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Declinaison", mappedBy="idProduit")
-     */
-    private $idDeclinaison;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->declinaison = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->idDeclinaison = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    private $categorie;
 
     public function getIdProduit(): ?int
     {
         return $this->idProduit;
     }
 
-    public function getNom(): ?string
+    public function getLibelleProduit(): ?string
     {
-        return $this->nom;
+        return $this->libelleProduit;
     }
 
-    public function setNom(string $nom): self
+    public function setLibelleProduit(string $libelleProduit): self
     {
-        $this->nom = $nom;
+        $this->libelleProduit = $libelleProduit;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescriptionProduit(): ?string
     {
-        return $this->description;
+        return $this->descriptionProduit;
     }
 
-    public function setDescription(string $description): self
+    public function setDescriptionProduit(?string $descriptionProduit): self
     {
-        $this->description = $description;
+        $this->descriptionProduit = $descriptionProduit;
 
         return $this;
     }
 
-    public function getPuHt(): ?float
+    public function getPrixUnitaireHt(): ?float
     {
-        return $this->puHt;
+        return $this->prixUnitaireHt;
     }
 
-    public function setPuHt(float $puHt): self
+    public function setPrixUnitaireHt(float $prixUnitaireHt): self
     {
-        $this->puHt = $puHt;
+        $this->prixUnitaireHt = $prixUnitaireHt;
 
         return $this;
     }
 
-    public function getImages(): ?string
+    public function getImage(): ?string
     {
-        return $this->images;
+        return $this->image;
     }
 
-    public function setImages(?string $images): self
+    public function setImage(?string $image): self
     {
-        $this->images = $images;
+        $this->image = $image;
 
         return $this;
     }
 
-    public function getIdCategorie(): ?Categorie
+    public function getActivation(): ?bool
     {
-        return $this->idCategorie;
+        return $this->activation;
     }
 
-    public function setIdCategorie(?Categorie $idCategorie): self
+    public function setActivation(?bool $activation): self
     {
-        $this->idCategorie = $idCategorie;
+        $this->activation = $activation;
+
+        return $this;
+    }
+
+    public function getImport(): ?bool
+    {
+        return $this->import;
+    }
+
+    public function setImport(?bool $import): self
+    {
+        $this->import = $import;
 
         return $this;
     }
@@ -179,53 +168,14 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection|Declinaison[]
-     */
-    public function getDeclinaison(): Collection
+    public function getCategorie(): ?Categorie
     {
-        return $this->declinaison;
+        return $this->categorie;
     }
 
-    public function addDeclinaison(Declinaison $declinaison): self
+    public function setCategorie(?Categorie $categorie): self
     {
-        if (!$this->declinaison->contains($declinaison)) {
-            $this->declinaison[] = $declinaison;
-        }
-
-        return $this;
-    }
-
-    public function removeDeclinaison(Declinaison $declinaison): self
-    {
-        $this->declinaison->removeElement($declinaison);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Declinaison[]
-     */
-    public function getIdDeclinaison(): Collection
-    {
-        return $this->idDeclinaison;
-    }
-
-    public function addIdDeclinaison(Declinaison $idDeclinaison): self
-    {
-        if (!$this->idDeclinaison->contains($idDeclinaison)) {
-            $this->idDeclinaison[] = $idDeclinaison;
-            $idDeclinaison->addIdProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIdDeclinaison(Declinaison $idDeclinaison): self
-    {
-        if ($this->idDeclinaison->removeElement($idDeclinaison)) {
-            $idDeclinaison->removeIdProduit($this);
-        }
+        $this->categorie = $categorie;
 
         return $this;
     }
