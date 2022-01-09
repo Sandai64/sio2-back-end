@@ -52,7 +52,7 @@ class BlogPage
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="blogPages")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $written_by_user;
+    private $username;
 
     public function getId(): ?int
     {
@@ -131,14 +131,14 @@ class BlogPage
         return $this;
     }
 
-    public function getWrittenByUser(): ?User
+    public function getUsername(): ?User
     {
-        return $this->written_by_user;
+        return $this->username;
     }
 
-    public function setWrittenByUser(?User $written_by_user): self
+    public function setUsername(?User $username): self
     {
-        $this->written_by_user = $written_by_user;
+        $this->username = $username;
 
         return $this;
     }
