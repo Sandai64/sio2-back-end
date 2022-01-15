@@ -21,8 +21,12 @@ class ProductController extends AbstractController
   private EntityManagerInterface $entity_manager;
   private ValidatorInterface     $validator;
 
-  public function __construct(ProductRepository $product_repository, SerializerInterface $serializer, EntityManagerInterface $entityManager, ValidatorInterface $validator)
-  {
+  public function __construct(
+    ProductRepository $product_repository,
+    SerializerInterface $serializer,
+    EntityManagerInterface $entityManager,
+    ValidatorInterface $validator
+  ){
     $this->product_repository = $product_repository;
     $this->serializer         = $serializer;
     $this->entity_manager     = $entityManager;

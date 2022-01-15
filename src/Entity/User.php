@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -18,38 +19,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"list_users"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"list_users"})
      */
-    private $email;
+    private $username;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"list_users"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({"detail_user"})
      */
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="id_user", orphanRemoval=true)
-     */
-    private $comments;
-
-    /**
-     * @ORM\OneToMany(targetEntity=BlogPage::class, mappedBy="written_by_user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=BlogPage::class, mappedBy="username")
+     * @Groups({"list_users"})
      */
     private $blogPages;
 
     public function __construct()
     {
-        $this->comments = new ArrayCollection();
         $this->blogPages = new ArrayCollection();
     }
 
@@ -58,14 +58,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getUsername(): ?string
     {
-        return $this->email;
+        return $this->username;
     }
 
-    public function setEmail(string $email): self
+    public function setUsername(string $username): self
     {
-        $this->email = $email;
+        $this->username = $username;
 
         return $this;
     }
@@ -77,7 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -124,36 +124,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection|Comment[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comment $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setIdUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): self
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getIdUser() === $this) {
-                $comment->setIdUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|BlogPage[]
      */
     public function getBlogPages(): Collection
@@ -165,7 +135,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->blogPages->contains($blogPage)) {
             $this->blogPages[] = $blogPage;
-            $blogPage->setWrittenByUser($this);
+            $blogPage->setUsername($this);
         }
 
         return $this;
@@ -175,8 +145,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->blogPages->removeElement($blogPage)) {
             // set the owning side to null (unless already changed)
-            if ($blogPage->getWrittenByUser() === $this) {
-                $blogPage->setWrittenByUser(null);
+            if ($blogPage->getUsername() === $this) {
+                $blogPage->setUsername(null);
             }
         }
 

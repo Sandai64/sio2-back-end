@@ -32,12 +32,6 @@ class Comment
      */
     private $created_at;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $id_user;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -75,18 +69,6 @@ class Comment
     public function setCreatedAt(\DateTimeImmutable $created_at): self
     {
         $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getIdUser(): ?User
-    {
-        return $this->id_user;
-    }
-
-    public function setIdUser(?User $id_user): self
-    {
-        $this->id_user = $id_user;
 
         return $this;
     }

@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\ProductKind;
 use App\Entity\Tax;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -30,12 +31,12 @@ class AppFixtures extends Fixture
         $tax->setPercentage(20.0);
         $manager->persist($tax);
 
-        for ($i = 0; $i <= 3; $i++)
+        for ($i = 0; $i <= 8; $i++)
         {
             $product = new Product();
             $product->setName('Sample product ' . $i);
             $product->setDescription('Description of sample product ' . $i);
-            $product->setPriceTaxFree(5.99);
+            $product->setPriceTaxFree(1.99);
             $product->setIsHidden(false);
             $product->setIdCategory($category->getId());
             $product->setSlug('sample_product_' . $i);
@@ -46,6 +47,15 @@ class AppFixtures extends Fixture
 
             $manager->persist($product);
         }
+
+        // Create an administrator user
+        $user_admin = new User();
+        $user_admin->setUsername('admin');
+        // Generated using Symfony's internal password hashing utility
+        // For password : 'admin'
+        $user_admin->setPassword('$2y$13$YKv/PZ5QL2lWnj1gPjiB3e6SlSTBsix0lnwYm95CfMF02hq6TeYi6');
+        $user_admin->setRoles(['ROLE_ADMIN']);
+        $manager->persist($user_admin);
 
         $manager->flush();
     }
