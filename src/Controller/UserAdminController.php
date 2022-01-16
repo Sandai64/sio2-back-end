@@ -53,7 +53,7 @@ class UserAdminController extends AbstractController
   // Public functions
 
   /**
-   * @Route("/api/admin/user/get/all", name="api_admin_user_get_all", methods={"POST"})
+   * @Route("/api/admin/user/get/all", name="api_admin_user_get_all", methods={"GET"})
    */
   public function admin_get_all_users() : Response
   {

@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\BlogCategory;
+use App\Entity\BlogPage;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\ProductKind;
@@ -56,6 +58,53 @@ class AppFixtures extends Fixture
         $user_admin->setPassword('$2y$13$YKv/PZ5QL2lWnj1gPjiB3e6SlSTBsix0lnwYm95CfMF02hq6TeYi6');
         $user_admin->setRoles(['ROLE_ADMIN']);
         $manager->persist($user_admin);
+
+        $blogCategory = new BlogCategory();
+        $blogCategory->setName('Sample blog category');
+        $manager->persist($blogCategory);
+
+        $blogPage = new BlogPage();
+        $blogPage->setTitle('Sample blog page');
+        $blogPage->setDescription("# Hello world
+
+        Showdown is a Javascript Markdown to HTML converter, based on the original works by John Gruber. It can be used client side (in the browser) or server side (with Node or io). 
+        
+        # Installation
+        
+        ## Download tarball
+        
+        You can download the latest release tarball directly from [releases][releases]
+        
+        ## Bower
+        
+            bower install showdown
+        
+        ## npm (server-side)
+        
+            npm install showdown
+        
+        ## CDN
+        
+        You can also use one of several CDNs available: 
+        
+        * rawgit CDN
+        
+                https://cdn.rawgit.com/showdownjs/showdown/<version tag>/dist/showdown.min.js
+        
+        * cdnjs
+        
+                https://cdnjs.cloudflare.com/ajax/libs/showdown/<version tag>/showdown.min.js
+        
+        
+        ---------
+        
+        7
+        ");
+
+        $blogPage->setUsername($user_admin);
+        $manager->persist($blogPage);
+
+        $blogCategory->addBlogPage($blogPage);
 
         $manager->flush();
     }

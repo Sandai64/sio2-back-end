@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\BlogPageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=BlogPageRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class BlogPage
 {
@@ -14,43 +16,51 @@ class BlogPage
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"list_posts", "list_categories"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"list_posts", "list_categories"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"list_posts"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups({"list_posts", "list_categories"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"list_posts", "list_categories"})
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=2048)
+     * @Groups({"list_posts", "list_categories"})
      */
     private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity=BlogCategory::class, inversedBy="blogPages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"list_posts"})
      */
     private $id_blog_category;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="blogPages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"list_posts"})
      */
     private $username;
 
@@ -141,5 +151,23 @@ class BlogPage
         $this->username = $username;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+    */
+    public function setMetadata() : void
+    {
+        $this->slug = strtolower($this->title);
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateUpdatedAtValue(): void
+    {
+        $this->updated_at = new \DateTime();
     }
 }
