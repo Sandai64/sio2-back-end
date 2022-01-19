@@ -6,9 +6,11 @@ use App\Repository\BlogCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=BlogCategoryRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class BlogCategory
 {
@@ -16,21 +18,25 @@ class BlogCategory
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"list_posts", "list_categories"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"list_posts", "list_categories"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"list_posts", "list_categories"})
      */
     private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity=BlogPage::class, mappedBy="id_blog_category")
+     * @Groups({"list_categories"})
      */
     private $blogPages;
 
@@ -96,5 +102,23 @@ class BlogCategory
         }
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+    */
+    public function setMetadata() : void
+    {
+        $this->slug = strtolower($this->name);
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateUpdatedAtValue(): void
+    {
+        $this->updated_at = new \DateTime();
     }
 }
