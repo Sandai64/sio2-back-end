@@ -124,4 +124,29 @@ class UserAdminController extends AbstractController
 
     return new JsonResponse(json_encode(['success' => 'Reset OK']), Response::HTTP_OK, [], true);
   }
+
+  #[Route('/api/admin/user/delete/{username}', name: 'api-admin-user-delete')]
+  public function admin_user_delete(string $username)
+  {
+    if ($username == 'admin') { return new JsonResponse(['error' => 'protected user'], Response::HTTP_BAD_REQUEST, [], true); }
+
+    try
+    {
+      $user = $this->user_repository->findBy(['username' => $username])[0];
+      $this->entity_manager->remove($user);
+      $this->entity_manager->flush();
+    }
+    catch (Exception $e)
+    {
+      $json = json_encode([
+        "status" => Response::HTTP_BAD_REQUEST,
+        "error" => "Malformed JSON",
+        "details" => $e,
+      ]);
+
+      return new JsonResponse($json, $json["status"], [], true);
+    }
+
+    return new JsonResponse(json_encode(['success' => 'Delete OK']), Response::HTTP_OK, [], true);
+  }
 }
