@@ -36,9 +36,9 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
-        - { path: ^/api/writer/, roles: [ROLE_USER, USER_ADMIN] }
-        - { path: ^/api/auth/, roles: [ROLE_USER, USER_ADMIN] }
-        - { path: ^/api/admin/, roles: ROLE_ADMIN }
+        - { path: ^/api/writer/, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/, roles: PUBLIC_ACCESS }
+        - { path: ^/api/admin/, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: PUBLIC_ACCESS}
 
 when@test:
