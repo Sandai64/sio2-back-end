@@ -6,6 +6,7 @@ use App\Entity\BlogCategory;
 use App\Entity\BlogPage;
 use App\Repository\BlogCategoryRepository;
 use App\Repository\BlogPageRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,6 +24,7 @@ class BlogController extends AbstractController
   private SerializerInterface    $serializer;
   private EntityManagerInterface $entity_manager;
   private ValidatorInterface     $validator;
+  private UserRepository $user_repository;
 
   public function __construct
   (
@@ -30,7 +32,8 @@ class BlogController extends AbstractController
     BlogCategoryRepository $category_repository,
     SerializerInterface $serializer,
     EntityManagerInterface $entity_manager,
-    ValidatorInterface $validator
+    ValidatorInterface $validator,
+    UserRepository $user_repository,
   )
   {
     $this->post_repository = $post_repository;
@@ -38,6 +41,7 @@ class BlogController extends AbstractController
     $this->serializer = $serializer;
     $this->entity_manager = $entity_manager;
     $this->validator = $validator;
+    $this->user_repository = $user_repository;
   }
 
   /*
@@ -160,14 +164,35 @@ class BlogController extends AbstractController
   {
     try 
     {
-      $postJSON = $request->getContent();
-      $post     = $this->serializer->deserialize($postJSON, BlogPage::class, 'json');
+      $postJSON = json_decode($request->getContent(), true);
+      
+      $post     = new BlogPage();
+      $post->setTitle($postJSON['title']);
+      $post->setDescription($postJSON['description']);
+      $post->setUsername($this->user_repository->findBy(['username' => $postJSON['author']])[0]);
+
+      if ( ! in_array('category_id', $postJSON) )
+      {
+        $foundMatchingCategory = $this->category_repository->findBy(['slug' => 'untagged']);
+        
+        if ($foundMatchingCategory == null || $foundMatchingCategory == false)
+        {
+          $category = new BlogCategory();
+          $category->setName('Untagged');
+
+          $this->entity_manager->persist($category);
+          $this->entity_manager->flush();
+        }
+
+        $untagged_category = $this->category_repository->findBy(['slug' => 'untagged'])[0];
+        $untagged_category->addBlogPage($post);
+      }
 
       $this->entity_manager->persist($post);
       $this->entity_manager->flush();
 
       // Send back an HTTP response
-      return new JsonResponse($postJSON, Response::HTTP_CREATED, [], true);
+      return new JsonResponse(json_encode(['success' => 'Post creation OK.']), Response::HTTP_CREATED, [], true);
     }
     catch (NotEncodableValueException $e)
     {
