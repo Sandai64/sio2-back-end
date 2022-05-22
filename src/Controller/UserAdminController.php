@@ -149,4 +149,44 @@ class UserAdminController extends AbstractController
 
     return new JsonResponse(json_encode(['success' => 'Delete OK']), Response::HTTP_OK, [], true);
   }
+
+  #[Route('/api/admin/user/create', name: 'api-admin-user-create')]
+  public function admin_user_create(Request $request)
+  {
+    $requestContent = json_decode($request->getContent(), true);
+
+    if ($requestContent['username'] == 'admin')
+    {
+      return new JsonResponse(['error' => 'protected user'], Response::HTTP_BAD_REQUEST, [], true);
+    }
+    
+    $foundMatchingUser = $this->user_repository->findBy(['username' => $requestContent['username']]);
+
+    if ($foundMatchingUser != null || $foundMatchingUser != false)
+    {
+      return new JsonResponse(['error' => 'user already in records'], Response::HTTP_BAD_REQUEST, [], true);
+    }
+
+    try
+    {
+      $user = new User();
+      $user->setUsername($requestContent['username']);
+      $user->setPassword($this->password_hasher->hashPassword($user, $requestContent['password']));
+      $user->setRoles($requestContent['roles']);
+      $this->entity_manager->persist($user);
+      $this->entity_manager->flush();
+    }
+    catch (Exception $e)
+    {
+      $json = json_encode([
+        "status" => Response::HTTP_BAD_REQUEST,
+        "error" => "Malformed JSON",
+        "details" => $e,
+      ]);
+
+      return new JsonResponse($json, $json["status"], [], true);
+    }
+
+    return new JsonResponse(json_encode(['success' => 'Add in records OK']), Response::HTTP_OK, [], true);
+  }
 }
